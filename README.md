@@ -1,4 +1,4 @@
-SCMIS
+# SCMIS
 
 一个学生选课关系信息系统——StudentCourseManagerInfoSystem(SCMIS)。数据库应用系统的设计实验。前后端分离开发，后端Tornado+Pymysql+Redis，前端Bootstrap+dataTables。
 
