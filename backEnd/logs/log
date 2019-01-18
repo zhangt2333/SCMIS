@@ -1,0 +1,50 @@
+[D 181204 18:10:26 selector_events:65] Using selector: SelectSelector
+[D 181204 18:10:42 selector_events:65] Using selector: SelectSelector
+[D 181209 08:18:25 selector_events:65] Using selector: SelectSelector
+[I 181209 08:18:32 web:2162] 200 GET /student.html (127.0.0.1) 577.92ms
+[I 181209 08:18:32 web:2162] 200 GET /static/css/bootstrap/styles.css (127.0.0.1) 2.01ms
+[I 181209 08:18:32 web:2162] 200 GET /static/css/nprogress/nprogress.css (127.0.0.1) 2.01ms
+[I 181209 08:18:32 web:2162] 200 GET /static/js/bootstrap/bootstrap.min.js (127.0.0.1) 3.01ms
+[I 181209 08:18:32 web:2162] 200 GET /static/js/scmis/common.js (127.0.0.1) 2.01ms
+[I 181209 08:18:32 web:2162] 200 GET /static/css/bootstrap/bootstrap.min.css (127.0.0.1) 42.12ms
+[I 181209 08:18:32 web:2162] 200 GET /static/js/jquery/jquery-1.12.4.min.js (127.0.0.1) 31.09ms
+[I 181209 08:18:32 web:2162] 200 GET /static/fonts/glyphicons-halflings-regular.woff2 (127.0.0.1) 2.04ms
+[I 181209 08:18:32 web:2162] 200 GET /static/js/nprogress/nprogress.js (127.0.0.1) 3.01ms
+[I 181209 08:18:32 web:2162] 200 GET /static/css/bootstrap/bootstrap.min.css.map (127.0.0.1) 30.09ms
+[D 181209 08:19:15 selector_events:65] Using selector: SelectSelector
+[E 181209 08:19:22 web:1670] Uncaught exception GET /api/user/logout (127.0.0.1)
+    HTTPServerRequest(protocol='http', host='127.0.0.1:8000', method='GET', uri='/api/user/logout', version='HTTP/1.1', remote_ip='127.0.0.1')
+    Traceback (most recent call last):
+      File "C:\Program Files\Python\Python36\lib\site-packages\tornado\web.py", line 1590, in _execute
+        result = method(*self.path_args, **self.path_kwargs)
+      File "C:\Users\TTTT\Desktop\数据库系统\课设\src\utils\commons.py", line 14, in wrapper
+        if not request_handler_obj.get_current_user():
+      File "C:\Users\TTTT\Desktop\数据库系统\课设\src\handlers\BaseHandler.py", line 35, in get_current_user
+        self.session = Session(self)
+      File "C:\Users\TTTT\Desktop\数据库系统\课设\src\utils\session.py", line 17, in __init__
+        logging.debug("init1 :" + str(self.session_id) + "_" + type(self.session_id))
+    TypeError: must be str, not type
+[E 181209 08:19:22 web:2162] 500 GET /api/user/logout (127.0.0.1) 4.52ms
+[I 181209 08:19:31 web:2162] 200 GET /student.html (127.0.0.1) 562.82ms
+[I 181209 08:19:31 web:2162] 200 GET /static/js/bootstrap/bootstrap.min.js (127.0.0.1) 2.00ms
+[I 181209 08:19:31 web:2162] 200 GET /static/js/nprogress/nprogress.js (127.0.0.1) 2.01ms
+[I 181209 08:19:31 web:2162] 200 GET /static/css/bootstrap/styles.css (127.0.0.1) 2.00ms
+[I 181209 08:19:31 web:2162] 200 GET /static/css/nprogress/nprogress.css (127.0.0.1) 2.01ms
+[I 181209 08:19:31 web:2162] 200 GET /static/css/bootstrap/bootstrap.min.css (127.0.0.1) 18.05ms
+[I 181209 08:19:31 web:2162] 200 GET /static/js/jquery/jquery-1.12.4.min.js (127.0.0.1) 17.05ms
+[I 181209 08:19:31 web:2162] 200 GET /static/js/scmis/common.js (127.0.0.1) 2.01ms
+[I 181209 08:19:31 web:2162] 200 GET /static/fonts/glyphicons-halflings-regular.woff2 (127.0.0.1) 2.99ms
+[I 181209 08:19:31 web:2162] 200 GET /static/css/bootstrap/bootstrap.min.css.map (127.0.0.1) 22.06ms
+[E 181209 08:19:34 web:1670] Uncaught exception GET /api/user/logout (127.0.0.1)
+    HTTPServerRequest(protocol='http', host='127.0.0.1:8000', method='GET', uri='/api/user/logout', version='HTTP/1.1', remote_ip='127.0.0.1')
+    Traceback (most recent call last):
+      File "C:\Program Files\Python\Python36\lib\site-packages\tornado\web.py", line 1590, in _execute
+        result = method(*self.path_args, **self.path_kwargs)
+      File "C:\Users\TTTT\Desktop\数据库系统\课设\src\utils\commons.py", line 14, in wrapper
+        if not request_handler_obj.get_current_user():
+      File "C:\Users\TTTT\Desktop\数据库系统\课设\src\handlers\BaseHandler.py", line 35, in get_current_user
+        self.session = Session(self)
+      File "C:\Users\TTTT\Desktop\数据库系统\课设\src\utils\session.py", line 17, in __init__
+        logging.debug("init1 :" + str(self.session_id) + "_" + type(self.session_id))
+    TypeError: must be str, not type
+[E 181209 08:19:34 web:2162] 500 GET /api/user/logout (127.0.0.1) 3.02ms
