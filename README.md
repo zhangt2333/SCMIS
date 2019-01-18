@@ -31,14 +31,14 @@
 
 * #### 前端展示
 
-![登录页](pic\1.png)
-![个人信息](pic\2.png)
-![学生信息管理](pic\3.png)
-![学生信息添加](pic\4.png)
-![信息导出Excel](pic\5.png)
-![信息导出Excel查看](pic\6.png)
-![报表打印](pic\7.png)
-![学生选课管理](pic\8.png)
+![登录页](pic/1.png)
+![个人信息](pic/2.png)
+![学生信息管理](pic/3.png)
+![学生信息添加](pic/4.png)
+![信息导出Excel](pic/5.png)
+![信息导出Excel查看](pic/6.png)
+![报表打印](pic/7.png)
+![学生选课管理](pic/8.png)
 
 
 * #### 目录结构
