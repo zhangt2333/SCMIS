@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>学生选课管理信息系统scmis</title>
+    <link href="./static/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="./static/css/bootstrap/styles.css" rel="stylesheet">
+    <link href="./static/css/nprogress/nprogress.css" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#sidebar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span style="float:left;padding-right: 20px;"></span>
+            <span style="color:#ffffff;" class="navbar-brand"> 学生选课管理信息系统scmis</span>
+
+            <ul class="user-menu">
+                <li class="dropdown pull-right">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
+                            class="glyphicon glyphicon-user" id="tag_profile"></span> 个人信息 <span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="profile.html"><span class="glyphicon glyphicon-user"></span> 个人中心</a></li>
+                        <li><a href="#" onclick="logout();"><span class="glyphicon glyphicon-log-out"></span> 退出</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+    <form role="search">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="信息检索">
+        </div>
+    </form>
+    <ul class="nav menu">
+        <li class="active"><a href="profile.html"><span class="glyphicon glyphicon-home"></span> 个人中心</a></li>
+        <li role="presentation" class="divider"></li>
+        <li><a href="student.html"><span class="glyphicon glyphicon-education"></span> 学生个人信息管理</a></li>
+        <li><a href="case.html"><span class="glyphicon glyphicon glyphicon-flash"></span> 学生奖罚信息管理</a></li>
+        <li><a href="department.html"><span class="glyphicon glyphicon-th-list"></span> 学校院系信息管理</a></li>
+        <li><a href="major.html"><span class="glyphicon glyphicon-tasks"></span> 学院专业信息管理</a></li>
+        <li><a href="course.html"><span class="glyphicon glyphicon-time"></span> 课程设置信息管理</a></li>
+        <li><a href="section.html"><span class="glyphicon glyphicon-list-alt"></span> 课程开课信息管理</a></li>
+        <li><a href="take.html"><span class="glyphicon glyphicon-stats"></span> 学生选课成绩管理</a></li>
+        <li role="presentation" class="divider"></li>
+        <li><a href="user.html"><span class="glyphicon glyphicon-user"></span> 系统用户信息管理</a></li>
+    </ul>
+    <div class="attribution"> 学生选课管理信息系统scmis</div>
+</div>
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <div class="row" style="padding-bottom: 9px;margin: 0px 0 20px; border-bottom: 1px solid #eee;">
+        <h1>个人中心</h1>
+    </div>
+
+    <div class="panel">
+        <div class="panel-body">
+            <h4>个人信息</h4>
+            <hr/>
+            <div>
+                <table style="line-height: 1.5;margin:23px; border-collapse:separate; border-spacing:64px 16px;">
+                    <tbody>
+                    <tr>
+                        <td><label for="input-profile_id">* 用户账号(教职工号)：</label></td>
+                        <td><input type="text" id="input-profile_id" disabled></td>
+                    </tr>
+                    <tr>
+                        <td><label for="input-profile_originPassword">* 原密码：</label></td>
+                        <td><input type="password" id="input-profile_originPassword" placeholder="更新信息需输原密码"
+                                   required=""></td>
+                    </tr>
+                    <tr>
+                        <td><label for="input-profile_newPassword"> 新密码：</label></td>
+                        <td><input type="password" id="input-profile_newPassword"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="input-profile_newPasswordConfirm">确认密码：</label></td>
+                        <td><input type="password" id="input-profile_newPasswordConfirm"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="input-profile_name">* 用户姓名：</label></td>
+                        <td><input type="text" id="input-profile_name" required=""></td>
+                    </tr>
+                    <tr>
+                        <td><label for="input-profile_email">电子邮箱：</label></td>
+                        <td><input type="text" id="input-profile_email"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="input-profile_mobile">手机号码：</label></td>
+                        <td><input type="text" id="input-profile_mobile"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="input-profile_department_id">* 院系编号：</label></td>
+                        <td><input type="text" id="input-profile_department_id" required=""></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button class="btn btn-primary btn-sm btn-block" id="btn-Save">保存信息</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="vertical-align: middle">
+        <div class="alert alert-primary" id="modalAlertType" role="alert">
+            <span id="modalAlert">None</span>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+    </div>
+</div>
+
+<script src="./static/js/jquery/jquery-1.12.4.min.js" type="text/javascript"></script>
+<script src="./static/js/bootstrap/bootstrap.min.js" type="text/javascript"></script>
+<script src="./static/js/nprogress/nprogress.js" type="text/javascript"></script>
+<script src="./static/js/scmis/common.js" type="text/javascript"></script>
+<script src="./static/js/scmis/profile.js" type="text/javascript"></script>
+
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>学生选课管理信息系统scmis</title>
+    <link href="./static/css/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <link href="./static/css/bootstrap/styles.css" rel="stylesheet">
+    <link href="./static/css/nprogress/nprogress.css" rel="stylesheet">
+    <link href="./static/css/datatables/datatables.min.css" rel="stylesheet">
+</head>
+
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#sidebar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span style="float:left;padding-right: 20px;"></span>
+            <span style="color:#ffffff;" class="navbar-brand"> 学生选课管理信息系统scmis</span>
+
+            <ul class="user-menu">
+                <li class="dropdown pull-right">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span
+                            class="glyphicon glyphicon-user" id="tag_profile"></span> 个人信息 <span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="profile.html"><span class="glyphicon glyphicon-user"></span> 个人中心</a></li>
+                        <li><a href="#" onclick="logout();"><span class="glyphicon glyphicon-log-out"></span> 退出</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+    <form role="search">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="信息检索">
+        </div>
+    </form>
+    <ul class="nav menu">
+        <li><a href="profile.html"><span class="glyphicon glyphicon-home"></span> 个人中心</a></li>
+        <li role="presentation" class="divider"></li>
+        <li><a href="student.html"><span class="glyphicon glyphicon-education"></span> 学生个人信息管理</a></li>
+        <li class="active"><a href="case.html"><span class="glyphicon glyphicon glyphicon-flash"></span> 学生奖罚信息管理</a>
+        </li>
+        <li><a href="department.html"><span class="glyphicon glyphicon-th-list"></span> 学校院系信息管理</a></li>
+        <li><a href="major.html"><span class="glyphicon glyphicon-tasks"></span> 学院专业信息管理</a></li>
+        <li><a href="course.html"><span class="glyphicon glyphicon-time"></span> 课程设置信息管理</a></li>
+        <li><a href="section.html"><span class="glyphicon glyphicon-list-alt"></span> 课程开课信息管理</a></li>
+        <li><a href="take.html"><span class="glyphicon glyphicon-stats"></span> 学生选课成绩管理</a></li>
+        <li role="presentation" class="divider"></li>
+        <li><a href="user.html"><span class="glyphicon glyphicon-user"></span> 系统用户信息管理</a></li>
+    </ul>
+    <div class="attribution"> 学生选课管理信息系统scmis</div>
+</div>
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <div class="row" style="padding-bottom: 9px;margin: 0px 0 20px; border-bottom: 1px solid #eee;">
+        <h1>学生奖罚信息管理</h1>
+    </div>
+
+
+    <div class="panel">
+        <div class="panel-body">
+            <div>
+                <label for="caseStudentId">学生学号：</label>
+                <input type="text" id="caseStudentId" style="width: 105px">
+                <button class="btn btn-primary btn-sm" id="btn-Query">查询学生奖罚信息</button>
+                <button class="btn btn-success btn-sm" id="btn-Add">添加学生奖罚信息</button>
+            </div>
+
+            <div>
+                <!-- Table -->
+                <br/>
+                <table class="table table-bordered" id="table">
+                    <thead>
+                    <tr>
+                        <th style="width: 110px">信息编号</th>
+                        <th style="width: 200px">学生信息</th>
+                        <th style="width: 110px">奖罚类型</th>
+                        <th style="width: 110px">奖罚级别</th>
+                        <th style="width: 200px">奖罚日期</th>
+                        <th style="width: 420px">奖罚说明</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="vertical-align: middle">
+        <div class="alert alert-primary" id="modalAlertType" role="alert">
+            <span id="modalAlert">None</span>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editcaseInfoModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title" id="modalTitle">学生奖罚信息 </h4>
+            </div>
+            <div class="modal-body">
+                <div class="panel-body">
+                    <div class="row">
+                        <label for="input-editcase-id">信息编号</label>
+                        <input class="form-control" type="text" id="input-editcase-id">
+                    </div>
+                    <div class="row">
+                        <label for="input-editcase-student_id">学生学号</label>
+                        <input class="form-control" type="text" id="input-editcase-student_id">
+                    </div>
+                    <div class="row">
+                        <label for="input-editcase-type">奖罚类型</label>
+                        <select id="input-editcase-type" class="form-control">
+                            <option value="0">奖励</option>
+                            <option value="1">惩罚</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <label for="input-editcase-level">奖罚级别</label>
+                        <select id="input-editcase-level" class="form-control">
+                            <option value="0">院级</option>
+                            <option value="1">校级</option>
+                            <option value="2">市级</option>
+                            <option value="3">省级</option>
+                            <option value="4">国级</option>
+                            <option value="5">世界级</option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <label for="input-editcase-date">奖罚日期 ("yyyy-mm-dd")</label>
+                        <input class="form-control" type="text" id="input-editcase-date">
+                    </div>
+                    <div class="row">
+                        <label for="input-editcase-description">奖罚说明</label>
+                        <textarea class="form-control" id="input-editcase-description"></textarea>
+                    </div>
+                    <br/>
+                    <div class="modal-footer">
+                        <div class="alert alert-danger" role="alert" id="edit-alert" style="display: none"></div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-primary" id="btn-editcaseConfirm">确认修改</button>
+                        <button type="button" class="btn btn-primary" id="btn-addcaseConfirm">确认添加</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="./static/js/jquery/jquery-1.12.4.min.js" type="text/javascript"></script>
+<script src="./static/js/bootstrap/bootstrap.min.js" type="text/javascript"></script>
+<script src="./static/js/nprogress/nprogress.js" type="text/javascript"></script>
+<script src="./static/js/datatables/datatables.min.js"></script>
+<script src="./static/js/scmis/common.js" type="text/javascript"></script>
+<script src="./static/js/scmis/case.js" type="text/javascript"></script>
+
+</body>
+</html>
