@@ -1,0 +1,2 @@
+class NoResultError(Exception):
+    pass

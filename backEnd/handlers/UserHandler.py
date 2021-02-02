@@ -16,7 +16,7 @@ from .BaseHandler import BaseHandler
 
 
 class LoginHandler(BaseHandler):
-    def post(self):
+    async def post(self):
         # 获取参数
         id = self.json_args.get('id')
         passwd = self.json_args.get('password')
@@ -29,19 +29,18 @@ class LoginHandler(BaseHandler):
         # 检查密码正确与否
         res = None
         try:
-            with self.db.cursor() as cursor:
-                cursor.execute('SELECT ui_passwd, ui_role FROM ms_user_info WHERE ui_id=%(id)s', {"id": id})
-                res = cursor.fetchone()
-                self.db.commit()
-                cursor.close()
+            async with self.db.acquire() as conn:
+                async with conn.cursor() as cursor:
+                    await cursor.execute('SELECT ui_passwd, ui_role FROM ms_user_info WHERE ui_id=%(id)s', {"id": id})
+                    res = await cursor.fetchone()
             passwd = hashlib.sha256((passwd + config.passwd_hash_key).encode('utf-8')).hexdigest()
             if not (res and res[0] == passwd):
                 return self.write(dict(errcode=RET.DATAERR, errmsg="账号或密码错误！"))
             # 成功，生成session数据
-            self.session = Session(self)
+            self.session = await Session.create(self)
             self.session.data['user_id'] = id
             self.session.data['user_role'] = str(res[1])
-            self.session.save()
+            await self.session.save()
             return self.write(dict(errcode=RET.OK, errmsg="登录成功"))
         except Exception as e:
             logging.error(e)
@@ -50,17 +49,17 @@ class LoginHandler(BaseHandler):
 
 class LogoutHandler(BaseHandler):
     @required_login
-    def get(self):
+    async def get(self):
         # 清除session数据
-        # sesssion = Session(self)
-        self.session.clear()
+        # sesssion = await Session.create(self)
+        await self.session.clear()
         self.write(dict(errcode=RET.OK, errmsg="退出成功"))
 
 
 class QueryHandler(BaseHandler):
     @required_login
     @required_admin
-    def post(self):
+    async def post(self):
         sql = """
         SELECT ui_id, ui_name, ui_email, ui_mobile, ui_department_id, di_name, ui_permission, ui_role
         FROM ms_user_info JOIN ms_department_info ON di_id=ui_department_id
@@ -74,7 +73,7 @@ class QueryHandler(BaseHandler):
         self.json_args['name'] = '%{}%'.format(self.json_args['name'])
         self.json_args['department_name'] = '%{}%'.format(self.json_args['department_name'])
         try:
-            res = DAO.db_query(self, sql, self.json_args, ret_keys)
+            res = await DAO.db_query(self, sql, self.json_args, ret_keys)
             return self.write(dict(errcode=RET.OK, errmsg="OK", data=res))
         except Exception as e:
             logging.error(e)
@@ -84,7 +83,7 @@ class QueryHandler(BaseHandler):
 class EditHandler(BaseHandler):
     @required_login
     @required_admin
-    def post(self):
+    async def post(self):
         sql = """
         UPDATE ms_user_info
         SET ui_name=%(name)s, ui_email=%(email)s, 
@@ -92,7 +91,7 @@ class EditHandler(BaseHandler):
         WHERE ui_id=%(id)s;
         """.strip()
         try:
-            DAO.db_execute(self, sql, self.json_args)
+            await DAO.db_execute(self, sql, self.json_args)
             return self.write(dict(errcode=RET.OK, errmsg="修改成功"))
         except Exception as e:
             logging.error(e)
@@ -104,14 +103,14 @@ class EditRoleHandler(BaseHandler):
 
     @required_login
     @required_admin
-    def post(self):
+    async def post(self):
         sql = """
         UPDATE ms_user_info
         SET ui_role=%(role)s
         WHERE ui_id=%(id)s;
         """.strip()
         try:
-            DAO.db_execute(self, sql, self.json_args)
+            await DAO.db_execute(self, sql, self.json_args)
             return self.write(dict(errcode=RET.OK, errmsg="授权成功"))
         except Exception as e:
             logging.error(e)
@@ -123,7 +122,7 @@ class AddHandler(BaseHandler):
 
     @required_login
     @required_admin
-    def post(self):
+    async def post(self):
         sql = """
         INSERT INTO ms_user_info
         (ui_id, ui_passwd, ui_name, ui_department_id, ui_email, ui_mobile) VALUES
@@ -149,13 +148,13 @@ class DeleteHandler(BaseHandler):
 
     @required_login
     @required_admin
-    def post(self):
+    async def post(self):
         sql = """
         DELETE FROM ms_user_info
         WHERE ui_id=%(id)s;
         """.strip()
         try:
-            DAO.db_execute(self, sql, self.json_args)
+            await DAO.db_execute(self, sql, self.json_args)
             return self.write(dict(errcode=RET.OK, errmsg="删除成功"))
         except Exception as e:
             logging.error(e)
@@ -165,7 +164,7 @@ class DeleteHandler(BaseHandler):
 class QuerySelfHandler(BaseHandler):
     """查询本用户"""
     @required_login
-    def post(self):
+    async def post(self):
         sql = """
         SELECT ui_id, ui_name, ui_email, ui_mobile, ui_department_id, di_name, ui_permission, ui_role
         FROM ms_user_info JOIN ms_department_info ON di_id=ui_department_id
@@ -175,7 +174,7 @@ class QuerySelfHandler(BaseHandler):
         """.strip()
         ret_keys = ['id', 'name', 'email', 'mobile', 'department_id', 'department_name', 'permission', 'role']
         try:
-            res = DAO.db_query(self, sql, {'id': self.session.data['user_id']}, ret_keys)
+            res = await DAO.db_query(self, sql, {'id': self.session.data['user_id']}, ret_keys)
             return self.write(dict(errcode=RET.OK, errmsg="OK", data=res))
         except Exception as e:
             logging.error(e)
@@ -186,7 +185,7 @@ class EditSelfHandler(BaseHandler):
     """更新本用户信息"""
 
     @required_login
-    def post(self):
+    async def post(self):
         sql = """
         UPDATE ms_user_info
         SET ui_name=%(name)s, ui_email=%(email)s, 
@@ -212,7 +211,7 @@ class EditSelfHandler(BaseHandler):
                 sql = sql.replace('ui_name=%(name)s,', 'ui_name=%(name)s, ui_passwd=%(newPassword)s,')
                 self.json_args['newPassword'] = hashlib.sha256(
                     (self.json_args['newPassword'] + config.passwd_hash_key).encode('utf-8')).hexdigest()
-            DAO.db_execute(self, sql, self.json_args)
+            await DAO.db_execute(self, sql, self.json_args)
             return self.write(dict(errcode=RET.OK, errmsg="修改成功"))
         except Exception as e:
             logging.error(e)

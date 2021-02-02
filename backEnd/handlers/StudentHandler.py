@@ -14,7 +14,7 @@ from .BaseHandler import BaseHandler
 class QueryHandler(BaseHandler):
     @required_login
     @required_principal
-    def post(self):
+    async def post(self):
         sql = """ 
         SELECT si_id, si_name, si_birthday, si_sex, si_mobile,
                si_native_place, si_enrollment_year, si_id_card, si_major_id
@@ -27,7 +27,7 @@ class QueryHandler(BaseHandler):
         self.json_args['id'] = '%{}%'.format(self.json_args['id'])
         self.json_args['name'] = '%{}%'.format(self.json_args['name'])
         try:
-            res = DAO.db_query(self, sql, self.json_args, ret_keys)
+            res = await DAO.db_query(self, sql, self.json_args, ret_keys)
             return self.write(dict(errcode=RET.OK, errmsg="OK", data=res))
         except Exception as e:
             logging.error(e)
@@ -39,7 +39,7 @@ class QueryHandler(BaseHandler):
 class EditHandler(BaseHandler):
     @required_login
     @required_principal
-    def post(self):
+    async def post(self):
         sql = """
         UPDATE ms_student_info
         SET si_name=%(name)s, si_birthday=%(birthday)s, si_sex=%(sex)s, si_mobile=%(mobile)s, 
@@ -48,7 +48,7 @@ class EditHandler(BaseHandler):
         WHERE si_id=%(id)s;
         """.strip()
         try:
-            DAO.db_execute(self, sql, self.json_args)
+            await DAO.db_execute(self, sql, self.json_args)
             return self.write(dict(errcode=RET.OK, errmsg="修改成功"))
         except Exception as e:
             logging.error(e)
@@ -58,7 +58,7 @@ class EditHandler(BaseHandler):
 class AddHandler(BaseHandler):
     @required_login
     @required_principal
-    def post(self):
+    async def post(self):
         sql = """
         INSERT INTO ms_student_info
         (si_id, si_name, si_birthday, si_sex, si_mobile, si_native_place, 
@@ -67,7 +67,7 @@ class AddHandler(BaseHandler):
          %(native_place)s, %(enrollment_year)s, %(id_card)s, %(major_id)s);
         """.strip()
         try:
-            DAO.db_execute(self, sql, self.json_args)
+            await DAO.db_execute(self, sql, self.json_args)
             return self.write(dict(errcode=RET.OK, errmsg="添加成功"))
         except Exception as e:
             logging.error(e)
@@ -77,13 +77,13 @@ class AddHandler(BaseHandler):
 class DeleteHandler(BaseHandler):
     @required_login
     @required_principal
-    def post(self):
+    async def post(self):
         sql = """
         DELETE FROM ms_student_info
         WHERE si_id=%(id)s;
         """.strip()
         try:
-            DAO.db_execute(self, sql, self.json_args)
+            await DAO.db_execute(self, sql, self.json_args)
             return self.write(dict(errcode=RET.OK, errmsg="删除成功"))
         except Exception as e:
             logging.error(e)

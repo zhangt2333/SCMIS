@@ -3,9 +3,9 @@
 import os
 
 import config
-from handlers.BaseHandler import StaticFileBaseHandler as StaticFileHandler
 from handlers import UserHandler, DepartmentHandler, MajorHandler, StudentHandler, CaseHandler, CourseHandler, \
     SectionHandler, TakeHandler
+from handlers.StaticHandler import StaticHandler
 
 urls = [
     (r"/api/user/login", UserHandler.LoginHandler),
@@ -54,6 +54,5 @@ urls = [
     (r"/api/take/delete", TakeHandler.DeleteHandler),
 
 
-    (r"/(.*)", StaticFileHandler,
-     dict(path=config.front_end_dir, default_filename="login.html"))
+    (r"/(.*)", StaticHandler, dict(path=config.front_end_dir, default_filename="login.html"))
 ]
