@@ -6,9 +6,12 @@
 # BaseHandler.py 2018/12/3 21:20
 
 import json
+import logging
 
 from tornado.web import RequestHandler
-
+from utils.NoResultError import NoResultError
+from utils.commons import row_to_obj
+from utils.response_code import RET
 from utils.session import Session
 
 
@@ -59,3 +62,44 @@ class BaseHandler(RequestHandler):
         if user_role == '0' or user_role == '1':
             return True
         return False
+
+    async def execute(self, sql, parms):
+        try:
+            async with self.db.acquire() as conn:
+                async with conn.cursor() as cur:
+                    await cur.execute(sql, parms)
+                    await conn.commit()
+            return self.write(dict(errcode=RET.OK, errmsg="执行成功"))
+        except Exception as e:
+            logging.exception(e)
+            return self.write(dict(errcode=RET.PARAMERR, errmsg="出错"))
+
+    async def query(self, sql, parms):
+        async with self.db.acquire() as conn:
+            async with conn.cursor() as cur:
+                await cur.execute(sql, parms)
+                return [row_to_obj(row, cur) for row in await cur.fetchall()]
+
+    async def db_query(self, sql, parms, ret_keys):
+        # 查询多项
+        ret = []
+        async with self.db.acquire() as conn:
+            async with conn.cursor() as cur:
+                await cur.execute(sql, parms)
+                size = len(ret_keys)
+                for i in await cur.fetchall():
+                    one = {}
+                    for j in range(size):
+                        one[ret_keys[j]] = str(i[j])
+                    ret.append(one)
+        return ret
+
+    async def queryone(self, sql, parms):
+        results = await self.query(sql, parms)
+        if len(results) == 0:
+            raise NoResultError()
+        elif len(results) > 1:
+            raise ValueError("Expected 1 result, got %d" % len(results))
+        return results[0]
+
+
