@@ -3,12 +3,12 @@
 # Copyright 2018 ZhangT. All Rights Reserved.
 # Author: ZhangT
 # Author-Github: github.com/zhangt2333
-# TakeHandler.py 2018/12/3 21:21
+# take_handler.py 2018/12/3 21:21
 import logging
 
 from utils.commons import required_login, required_principal
 from utils.response_code import RET
-from .BaseHandler import BaseHandler
+from .base_handler import BaseHandler
 
 
 class QueryHandler(BaseHandler):

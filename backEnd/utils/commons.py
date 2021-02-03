@@ -4,7 +4,6 @@ import functools
 
 import tornado.util
 
-from utils.session import Session
 from utils.response_code import RET
 
 

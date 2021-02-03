@@ -3,7 +3,7 @@
 # Copyright 2018 ZhangT. All Rights Reserved.
 # Author: ZhangT
 # Author-Github: github.com/zhangt2333
-# StaticHandler.py 2018/12/3 21:21
+# static_handler.py 2018/12/3 21:21
 
 from tornado.web import StaticFileHandler
 

@@ -3,7 +3,7 @@
 # Copyright 2018 ZhangT. All Rights Reserved.
 # Author: ZhangT
 # Author-Github: github.com/zhangt2333
-# UserHandler.py 2018/12/3 21:13
+# user_handler.py 2018/12/3 21:13
 import hashlib
 import logging
 
@@ -11,7 +11,7 @@ import config
 from utils.commons import required_login, required_admin
 from utils.response_code import RET
 from utils.session import Session
-from .BaseHandler import BaseHandler
+from .base_handler import BaseHandler
 
 
 class LoginHandler(BaseHandler):

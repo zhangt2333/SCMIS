@@ -3,13 +3,13 @@
 # Copyright 2018 ZhangT. All Rights Reserved.
 # Author: ZhangT
 # Author-Github: github.com/zhangt2333
-# BaseHandler.py 2018/12/3 21:20
+# base_handler.py 2018/12/3 21:20
 
 import json
 import logging
 
 from tornado.web import RequestHandler
-from utils.NoResultError import NoResultError
+from utils.exception import NoResultError
 from utils.commons import row_to_obj
 from utils.response_code import RET
 from utils.session import Session

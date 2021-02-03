@@ -1,4 +1,9 @@
-# coding:utf-8
+# -*- coding: utf-8 -*-
+# !/usr/bin/env python
+# Copyright 2018 ZhangT. All Rights Reserved.
+# Author: ZhangT
+# Author-Github: github.com/zhangt2333
+# response_code.py 2018/12/3 21:13
 
 class RET:
     OK                  = "0"
