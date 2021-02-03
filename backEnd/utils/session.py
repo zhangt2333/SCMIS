@@ -19,11 +19,11 @@ class Session(object):
         self = Session()
         self._handler = handler
         self.session_id = handler.get_secure_cookie("session_id")
+        self.data = {}
 
         # 如果不存在session_id,生成session_id
         if not self.session_id:
             self.session_id = uuid.uuid4().hex
-            self.data = {}
             handler.set_secure_cookie("session_id", self.session_id)
         # 如果存在session_id, 去redis中取出data
         else:

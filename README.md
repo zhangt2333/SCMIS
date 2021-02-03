@@ -1,6 +1,10 @@
 # SCMIS
 
-一个学生选课管理信息系统——StudentCourseManagerInfoSystem(SCMIS)。数据库应用系统的设计实验。前后端分离开发，后端Tornado+Pymysql+Redis，前端Bootstrap+dataTables。
+一个轻量级学生选课管理信息系统 —— StudentCourseManagerInfoSystem(SCMIS)。
+
+一个极好的 tornado web 项目脚手架示例。
+
+前后端分离开发，后端 tornado+aiomysql+aioredis，前端 Bootstrap+dataTables。
 
  ![version](https://img.shields.io/badge/version-v1.0-blue.svg)  ![jdk](https://img.shields.io/badge/python-3.6.5-green.svg) ![mysql](https://img.shields.io/badge/mysql-v5.7-brightgreen.svg) [![licence](https://img.shields.io/badge/licence-Apache2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) 
 

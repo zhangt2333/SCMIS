@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#!/usr/bin/env python
+# !/usr/bin/env python
 # Copyright 2018 ZhangT. All Rights Reserved.
 # Author: ZhangT
 # Author-Github: github.com/zhangt2333

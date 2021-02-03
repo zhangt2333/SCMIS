@@ -21,16 +21,16 @@ app_settings = dict(
 
 # 数据库配置参数
 mysql_settings = dict(
-    host="192.168.152.128",
-    port=33306,
+    host="127.0.0.1",
+    port=3306,
     db="scmis",
     user="root",
-    password="sduoj-server-mysql"
+    password=""
 )
 
 # Redis配置参数
 redis_settings = dict(
-    address="redis://192.168.152.128:6379"
+    address="redis://127.0.0.1:6379"
 )
 
 # 日志配置

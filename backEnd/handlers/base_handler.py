@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#!/usr/bin/env python
+# !/usr/bin/env python
 # Copyright 2018 ZhangT. All Rights Reserved.
 # Author: ZhangT
 # Author-Github: github.com/zhangt2333
@@ -49,30 +49,17 @@ class BaseHandler(RequestHandler):
 
     async def get_current_user(self):
         """判断用户是否登录"""
-        if self.session:
-            return self.session.data
-        self.session = await Session.create(self)
+        if not self.session:
+            self.session = await Session.create(self)
         return self.session.data
 
     async def is_admin(self):
         """判断用户是否为管理员"""
-        if not self.session:
-            user_role = await self.get_current_user()['user_role']
-        else:
-            user_role = self.session.data['user_role']
-        if user_role == '0':
-            return True
-        return False
+        return (await self.get_current_user()).get('user_role') == '0'
 
     async def is_principal(self):
         """判断用户是否为教务员"""
-        if not self.session:
-            user_role = await self.get_current_user()['user_role']
-        else:
-            user_role = self.session.data['user_role']
-        if user_role == '0' or user_role == '1':
-            return True
-        return False
+        return (await self.get_current_user()).get('user_role') in ['0', '1']
 
     async def execute(self, sql, parms):
         try:
