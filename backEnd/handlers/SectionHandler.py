@@ -4,7 +4,6 @@
 # Author: ZhangT
 # Author-Github: github.com/zhangt2333
 # SectionHandler.py 2018/12/3 21:21
-import logging
 
 from utils.commons import required_login, required_principal
 from utils.response_code import RET
@@ -23,16 +22,11 @@ class QueryHandler(BaseHandler):
               ci_name like %(name)s
         ORDER BY cs_id;
         """
-        retKeys = ['id', 'course_id', 'course_name', 'semester', 'year', 'capacity',
+        ret_keys = ['id', 'course_id', 'course_name', 'semester', 'year', 'capacity',
                    'teacher_id', 'teacher_name', 'btime', 'etime']
         self.json_args['id'] = '%{}%'.format(self.json_args['id'])
         self.json_args['name'] = '%{}%'.format(self.json_args['name'])
-        try:
-            res = await self.db_query(sql, self.json_args, retKeys)
-            return self.write(dict(errcode=RET.OK, errmsg="OK", data=res))
-        except Exception as e:
-            logging.exception(e)
-            return self.write(dict(errcode=RET.PARAMERR, errmsg="出错"))
+        return self.write(dict(errcode=RET.OK, errmsg="OK", data=await self.query_with_ret_key(sql, self.json_args, ret_keys)))
 
 
 class EditHandler(BaseHandler):

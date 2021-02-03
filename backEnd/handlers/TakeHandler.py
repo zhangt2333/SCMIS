@@ -24,17 +24,12 @@ class QueryHandler(BaseHandler):
               ct_student_id like %(student_id)s AND
               ct_section_id like %(section_id)s;
         """
-        retKeys = ['id', 'student_id', 'student_name','section_id', 'course_name', 'usual_grade',
+        ret_keys = ['id', 'student_id', 'name','section_id', 'course_name', 'usual_grade',
                    'mid_grade', 'final_grade', 'grade', 'GPA']
         self.json_args['id'] = '%{}%'.format(self.json_args['id'])
         self.json_args['student_id'] = '%{}%'.format(self.json_args['student_id'])
         self.json_args['section_id'] = '%{}%'.format(self.json_args['section_id'])
-        try:
-            res = await self.db_query(sql, self.json_args, retKeys)
-            return self.write(dict(errcode=RET.OK, errmsg="OK", data=res))
-        except Exception as e:
-            logging.exception(e)
-            return self.write(dict(errcode=RET.PARAMERR, errmsg="出错"))
+        return self.write(dict(errcode=RET.OK, errmsg="OK", data=await self.query_with_ret_key(sql, self.json_args, ret_keys)))
 
 
 class EditHandler(BaseHandler):

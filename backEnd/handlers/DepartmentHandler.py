@@ -4,7 +4,6 @@
 # Author: ZhangT
 # Author-Github: github.com/zhangt2333
 # DepartmentHandler.py 2018/12/3 21:19
-import logging
 
 from utils.commons import required_login, required_admin
 from utils.response_code import RET
@@ -19,15 +18,9 @@ class QueryHandler(BaseHandler):
         WHERE CONCAT(di_id, '') like %(id)s AND
               di_name like %(name)s;
         """
-        retKeys = ['id', 'name', 'dean', 'address']
         self.json_args['id'] = '%{}%'.format(self.json_args['id'])
         self.json_args['name'] = '%{}%'.format(self.json_args['name'])
-        try:
-            res = await self.db_query(sql, self.json_args, retKeys)
-            return self.write(dict(errcode=RET.OK, errmsg="OK", data=res))
-        except Exception as e:
-            logging.exception(e)
-            return self.write(dict(errcode=RET.PARAMERR, errmsg="出错"))
+        return self.write(dict(errcode=RET.OK, errmsg="OK", data=await self.query(sql, self.json_args)))
 
 class EditHandler(BaseHandler):
     @required_login

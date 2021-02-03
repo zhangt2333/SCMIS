@@ -4,7 +4,6 @@
 # Author: ZhangT
 # Author-Github: github.com/zhangt2333
 # StudentHandler.py 2018/12/3 21:20
-import logging
 
 from utils.commons import required_login, required_principal
 from utils.response_code import RET
@@ -21,18 +20,9 @@ class QueryHandler(BaseHandler):
         WHERE si_id like %(id)s AND 
               si_name like %(name)s; 
         """
-        ret_keys = ['id', 'name', 'birthday', 'sex', 'mobile', 'native_place',
-                    'enrollment_year', 'id_card', 'major_id']
         self.json_args['id'] = '%{}%'.format(self.json_args['id'])
         self.json_args['name'] = '%{}%'.format(self.json_args['name'])
-        try:
-            res = await self.db_query(sql, self.json_args, ret_keys)
-            return self.write(dict(errcode=RET.OK, errmsg="OK", data=res))
-        except Exception as e:
-            logging.exception(e)
-            return self.write(dict(errcode=RET.PARAMERR, errmsg="参数错误"))
-
-
+        return self.write(dict(errcode=RET.OK, errmsg="OK", data=await self.query(sql, self.json_args)))
 
 
 class EditHandler(BaseHandler):

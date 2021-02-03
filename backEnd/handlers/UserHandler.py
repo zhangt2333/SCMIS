@@ -71,12 +71,7 @@ class QueryHandler(BaseHandler):
         self.json_args['id'] = '%{}%'.format(self.json_args['id'])
         self.json_args['name'] = '%{}%'.format(self.json_args['name'])
         self.json_args['department_name'] = '%{}%'.format(self.json_args['department_name'])
-        try:
-            res = await self.db_query(sql, self.json_args, ret_keys)
-            return self.write(dict(errcode=RET.OK, errmsg="OK", data=res))
-        except Exception as e:
-            logging.exception(e)
-            return self.write(dict(errcode=RET.PARAMERR, errmsg="参数错误"))
+        return self.write(dict(errcode=RET.OK, errmsg="OK", data=await self.query_with_ret_key(sql, self.json_args, ret_keys)))
 
 
 class EditHandler(BaseHandler):
@@ -160,12 +155,7 @@ class QuerySelfHandler(BaseHandler):
         LIMIT 1;
         """
         ret_keys = ['id', 'name', 'email', 'mobile', 'department_id', 'department_name', 'permission', 'role']
-        try:
-            res = await self.db_query(sql, {'id': self.session.data['user_id']}, ret_keys)
-            return self.write(dict(errcode=RET.OK, errmsg="OK", data=res))
-        except Exception as e:
-            logging.exception(e)
-            return self.write(dict(errcode=RET.PARAMERR, errmsg="出错"))
+        return self.write(dict(errcode=RET.OK, errmsg="OK", data=await self.query_with_ret_key(sql, self.json_args, ret_keys)))
 
 
 class EditSelfHandler(BaseHandler):

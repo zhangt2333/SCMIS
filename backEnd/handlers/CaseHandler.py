@@ -4,7 +4,6 @@
 # Author: ZhangT
 # Author-Github: github.com/zhangt2333
 # CaseHandler.py 2018/12/3 21:20
-import logging
 
 from utils.commons import required_login, required_principal
 from utils.response_code import RET
@@ -20,14 +19,9 @@ class QueryHandler(BaseHandler):
         FROM ms_student_case JOIN ms_student_info ON sc_student_id=si_id
         WHERE sc_student_id like %(student_id)s;
         """
-        retKeys = ['id', 'student_id','student_name','type', 'level', 'date', 'description']
+        ret_keys = ['id', 'student_id','student_name','type', 'level', 'date', 'description']
         self.json_args['student_id'] = '%{}%'.format(self.json_args['student_id'])
-        try:
-            res = await self.db_query(sql, self.json_args, retKeys)
-            return self.write(dict(errcode=RET.OK, errmsg="OK", data=res))
-        except Exception as e:
-            logging.exception(e)
-            return self.write(dict(errcode=RET.PARAMERR, errmsg="出错"))
+        return self.write(dict(errcode=RET.OK, errmsg="OK", data=await self.query_with_ret_key(sql, self.json_args, ret_keys)))
 
 
 class EditHandler(BaseHandler):

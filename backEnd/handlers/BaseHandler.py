@@ -17,6 +17,12 @@ from utils.session import Session
 
 class BaseHandler(RequestHandler):
     """自定义基类"""
+
+    def __init__(self, application, request, **kwargs):
+        self.json_args = {}
+        self.session = None
+        super().__init__(application, request, **kwargs)
+
     @property
     def db(self):
         """作为RequestHandler对象的db属性"""
@@ -31,8 +37,6 @@ class BaseHandler(RequestHandler):
         """预解析json数据"""
         if self.request.headers.get("Content-Type", "").startswith("application/json"):
             self.json_args = json.loads(self.request.body)
-        else:
-            self.json_args = {}
 
     def set_default_headers(self):
         """设置默认json格式"""
@@ -75,23 +79,31 @@ class BaseHandler(RequestHandler):
             return self.write(dict(errcode=RET.PARAMERR, errmsg="出错"))
 
     async def query(self, sql, parms):
-        async with self.db.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute(sql, parms)
-                return [row_to_obj(row, cur) for row in await cur.fetchall()]
+        try:
+            async with self.db.acquire() as conn:
+                async with conn.cursor() as cur:
+                    await cur.execute(sql, parms)
+                    return [row_to_obj(row, cur) for row in await cur.fetchall()]
+        except Exception as e:
+            logging.exception(e)
+            return self.write(dict(errcode=RET.PARAMERR, errmsg="出错"))
 
-    async def db_query(self, sql, parms, ret_keys):
+    async def query_with_ret_key(self, sql, parms, ret_keys):
         # 查询多项
         ret = []
-        async with self.db.acquire() as conn:
-            async with conn.cursor() as cur:
-                await cur.execute(sql, parms)
-                size = len(ret_keys)
-                for i in await cur.fetchall():
-                    one = {}
-                    for j in range(size):
-                        one[ret_keys[j]] = str(i[j])
-                    ret.append(one)
+        try:
+            async with self.db.acquire() as conn:
+                async with conn.cursor() as cur:
+                    await cur.execute(sql, parms)
+                    size = len(ret_keys)
+                    for i in await cur.fetchall():
+                        one = {}
+                        for j in range(size):
+                            one[ret_keys[j]] = str(i[j])
+                        ret.append(one)
+        except Exception as e:
+            logging.exception(e)
+            return self.write(dict(errcode=RET.PARAMERR, errmsg="出错"))
         return ret
 
     async def queryone(self, sql, parms):

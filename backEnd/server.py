@@ -1,6 +1,6 @@
 # coding:utf-8
 import aiomysql
-import aioredis as aioredis
+import aioredis
 import tornado.web
 import tornado.ioloop
 import tornado.options

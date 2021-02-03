@@ -4,7 +4,6 @@
 # Author: ZhangT
 # Author-Github: github.com/zhangt2333
 # MajorHandler.py 2018/12/3 21:20
-import logging
 
 from utils.commons import required_login, required_principal
 from utils.response_code import RET
@@ -19,15 +18,9 @@ class QueryHandler(BaseHandler):
         WHERE CONCAT(mi_id, '') like %(id)s AND
               mi_name like %(name)s;
         """
-        retKeys = ['id', 'name', 'degree', 'study_time', 'department_id']
         self.json_args['id'] = '%{}%'.format(self.json_args['id'])
         self.json_args['name'] = '%{}%'.format(self.json_args['name'])
-        try:
-            res = await self.db_query(sql, self.json_args, retKeys)
-            return self.write(dict(errcode=RET.OK, errmsg="OK", data=res))
-        except Exception as e:
-            logging.exception(e)
-            return self.write(dict(errcode=RET.PARAMERR, errmsg="出错"))
+        return self.write(dict(errcode=RET.OK, errmsg="OK", data=await self.query(sql, self.json_args)))
 
 
 class EditHandler(BaseHandler):

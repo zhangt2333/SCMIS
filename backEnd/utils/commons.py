@@ -44,12 +44,17 @@ def required_principal(fun):
 
     return wrapper
 
+
 def row_to_obj(row, cur):
     """Convert a SQL row to an object supporting dict and attribute access."""
     obj = tornado.util.ObjectDict()
     for val, desc in zip(row, cur.description):
-        obj[desc[0]] = val
+        obj[key_without_prefix(desc[0])] = str(val)
     return obj
+
+
+def key_without_prefix(key):
+    return key[key.index('_')+1:]
 
 # @dec
 # def add_two(num1, num2):

@@ -4,7 +4,6 @@
 # Author: ZhangT
 # Author-Github: github.com/zhangt2333
 # CourseHandler.py 2018/12/3 21:21
-import logging
 
 from utils.commons import required_login, required_principal
 from utils.response_code import RET
@@ -21,15 +20,9 @@ class QueryHandler(BaseHandler):
         WHERE CONCAT(ci_id, '') like %(id)s AND
               ci_name like %(name)s;
         """
-        retKeys = ['id', 'name', 'property', 'type', 'period', 'credit', 'exam_type', 'department_id' , 'description']
         self.json_args['id'] = '%{}%'.format(self.json_args['id'])
         self.json_args['name'] = '%{}%'.format(self.json_args['name'])
-        try:
-            res = await self.db_query(sql, self.json_args, retKeys)
-            return self.write(dict(errcode=RET.OK, errmsg="OK", data=res))
-        except Exception as e:
-            logging.exception(e)
-            return self.write(dict(errcode=RET.PARAMERR, errmsg="出错"))
+        return self.write(dict(errcode=RET.OK, errmsg="OK", data=await self.query(sql, self.json_args)))
 
 
 class EditHandler(BaseHandler):
