@@ -155,7 +155,7 @@ class QuerySelfHandler(BaseHandler):
         LIMIT 1;
         """
         ret_keys = ['id', 'name', 'email', 'mobile', 'department_id', 'department_name', 'permission', 'role']
-        return self.write(dict(errcode=RET.OK, errmsg="OK", data=await self.query_with_ret_key(sql, self.json_args, ret_keys)))
+        return self.write(dict(errcode=RET.OK, errmsg="OK", data=await self.query_with_ret_key(sql, {'id': self.session.data['user_id']}, ret_keys)))
 
 
 class EditSelfHandler(BaseHandler):

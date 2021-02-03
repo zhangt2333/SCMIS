@@ -42,8 +42,15 @@ class BaseHandler(RequestHandler):
         """设置默认json格式"""
         self.set_header("Content-Type", "application/json; charset=UTF-8")
 
+    def write(self, chunk):
+        if type(chunk) == dict and chunk.get('errcode') == RET.OK and not chunk.get('data'):
+            return
+        return super().write(chunk)
+
     async def get_current_user(self):
         """判断用户是否登录"""
+        if self.session:
+            return self.session.data
         self.session = await Session.create(self)
         return self.session.data
 
@@ -101,10 +108,11 @@ class BaseHandler(RequestHandler):
                         for j in range(size):
                             one[ret_keys[j]] = str(i[j])
                         ret.append(one)
+            return ret
         except Exception as e:
             logging.exception(e)
-            return self.write(dict(errcode=RET.PARAMERR, errmsg="出错"))
-        return ret
+            self.write(dict(errcode=RET.PARAMERR, errmsg="出错"))
+            return None
 
     async def queryone(self, sql, parms):
         results = await self.query(sql, parms)
