@@ -47,28 +47,29 @@
   SCMIS
   │
   ├─backEnd             // 后端目录
+  │  │  main.py         // 启动类
+  │  │  application.py  // 应用
   │  │  config.py       // 配置类
   │  │  constants.py    // 常量类
   │  │  DBInit.sql      // 数据库建模
   │  │  requirements.txt// 第三方库要求
-  │  │  server.py       // 服务器类
   │  │  urls.py         // 路由映射
   │  ├─handlers         // 具体的请求处理类，按页面（业务）划分
-  │  │      BaseHandler.py      // 基类
-  │  │      CaseHandler.py      // 学生奖罚业务
-  │  │      CourseHandler.py    // 课程设置业务
-  │  │      DepartmentHandler.py// 学校院系业务
-  │  │      MajorHandler.py     // 专业设置业务
-  │  │      SectionHandler.py   // 课程开课业务
-  │  │      StudentHandler.py   // 学生个人业务
-  │  │      TakeHandler.py      // 学生选课业务
-  │  │      UserHandler.py      // 系统用户业务
+  │  │      base_handler.py      // 基类
+  │  │      case_handler.py      // 学生奖罚业务
+  │  │      course_handler.py    // 课程设置业务
+  │  │      department_handler.py// 学校院系业务
+  │  │      major_handler.py     // 专业设置业务
+  │  │      section_handler.py   // 课程开课业务
+  │  │      student_handler.py   // 学生个人业务
+  │  │      take_handler.py      // 学生选课业务
+  │  │      user_handler.py      // 系统用户业务
   │  ├─logs
   │  └─utils   // 工具类、第三方库
   │          commons.py        // 共用类
-  │          DAO.py            // 对数据库操作的一些封装
   │          response_code.py  // 前后端通信响应码规约
   │          session.py        // 结合redis的session实现
+  │          exception.py      // 异常
   └─frontEnd             // 前端目录
       │  case.html       // 学生奖罚信息管理页
       │  course.html     // 课程设置信息管理页
