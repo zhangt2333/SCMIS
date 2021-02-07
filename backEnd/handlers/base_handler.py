@@ -67,7 +67,7 @@ class BaseHandler(RequestHandler):
                 async with conn.cursor() as cur:
                     await cur.execute(sql, parms)
                     await conn.commit()
-            return self.write(dict(errcode=RET.OK, errmsg="执行成功"))
+            return self.write(dict(errcode=RET.OK, errmsg="执行成功", data="ok"))
         except Exception as e:
             logging.exception(e)
             return self.write(dict(errcode=RET.PARAMERR, errmsg="出错"))

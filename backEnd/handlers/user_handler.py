@@ -40,7 +40,7 @@ class LoginHandler(BaseHandler):
             self.session.data['user_id'] = id
             self.session.data['user_role'] = str(res[1])
             await self.session.save()
-            return self.write(dict(errcode=RET.OK, errmsg="登录成功"))
+            return self.write(dict(errcode=RET.OK, errmsg="登录成功", data="ok"))
         except Exception as e:
             logging.exception(e)
             return self.write(dict(errcode=RET.PARAMERR, errmsg="账号或密码错误"))
@@ -52,7 +52,7 @@ class LogoutHandler(BaseHandler):
         # 清除session数据
         # sesssion = await Session.create(self)
         await self.session.clear()
-        self.write(dict(errcode=RET.OK, errmsg="退出成功"))
+        self.write(dict(errcode=RET.OK, errmsg="退出成功", data="ok"))
 
 
 class QueryHandler(BaseHandler):
@@ -124,7 +124,7 @@ class AddHandler(BaseHandler):
                 except Exception as e:
                     logging.exception(e)
                     await conn.rollback()
-            return self.write(dict(errcode=RET.OK, errmsg="添加成功"))
+            return self.write(dict(errcode=RET.OK, errmsg="添加成功", data="ok"))
         except Exception as e:
             logging.exception(e)
             return self.write(dict(errcode=RET.PARAMERR, errmsg="出错"))
